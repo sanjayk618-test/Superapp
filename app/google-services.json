@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "41528594113",
+    "project_id": "superapp-e35dc",
+    "storage_bucket": "superapp-e35dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41528594113:android:23bb73aca54d7fa8a4ce40",
+        "android_client_info": {
+          "package_name": "com.example.superapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5U0Hgcba920oQ7r5NiyPK6XVL36N6eZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

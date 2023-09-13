@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Superapp</string>
+    <string name="title_activity_currentlocation">currentlocation</string>
+</resources>
