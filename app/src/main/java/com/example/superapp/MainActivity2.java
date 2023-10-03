@@ -4,7 +4,7 @@ import static com.google.android.material.internal.ViewUtils.hideKeyboard;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,14 +13,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,10 +48,24 @@ public class MainActivity2 extends AppCompatActivity {
     // string for storing our verification ID
     private String verificationId;
 
+    public SharedPreferences sharedPreferences;
+    public static final String PREF_NAME = "MyPrefs"; // SharedPreferences file name
+   // public static final String KEY_USERNAME = "phoneno";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        FirebaseApp.initializeApp(/*context=*/ this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
+
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -53,6 +75,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         generateOTPBtn = findViewById(R.id.button2);
         verifyOTPBtn = findViewById(R.id.button);
+
+
+
 
 
         generateOTPBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +93,17 @@ public class MainActivity2 extends AppCompatActivity {
                     // if the text field is not empty we are calling our
                     // send OTP method for getting OTP from Firebase.
                     String phone = "+91" + edtPhone.getText().toString();
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("key1", phone);
+                    editor.apply();
+
+                    Log.d("Update", "phone number =" + phone);
+
                     sendVerificationCode(phone);
-                    Log.d("Update", "Generate otpbutton");
+
+
+
 
 
                 }
@@ -78,9 +112,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+           public void onClick(View v) {
                 // validating if the OTP text field is empty or not.
-                if (TextUtils.isEmpty(edtOTP.getText().toString())) {
+           /*    if (TextUtils.isEmpty(edtOTP.getText().toString())) {
                     // if the OTP text field is empty display
                     // a message to user to enter OTP
                     Toast.makeText(MainActivity2.this, "Please enter OTP", Toast.LENGTH_SHORT).show();
@@ -88,12 +122,18 @@ public class MainActivity2 extends AppCompatActivity {
                     // if OTP field is not empty calling
                     // method to verify the OTP.
                     verifyCode(edtOTP.getText().toString());
-                    Log.d("Update", "VifiyOTP Button");
-                }
-              /*  Intent i = new Intent(MainActivity2.this, MyLocationLayerActivity.class);
+                    Log.d("Update", "VerifyOTP Button");
+                }*/
+               String phone = "+91" + edtPhone.getText().toString();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("key1", phone);
+                editor.apply();
+
+                Log.d("Update", "phone number =" + phone);
+               Intent i = new Intent(MainActivity2.this, MyLocationLayerActivity.class);
                 startActivity(i);
                 finish();
-                Log.d("Update", "Moving to CurrentLocation");*/
+                Log.d("Update", "Moving to CurrentLocation");
             }
         });
     }
@@ -128,9 +168,9 @@ public class MainActivity2 extends AppCompatActivity {
             // when we receive the OTP it
             // contains a unique id which
             // we are storing in our string
-            // which we have already created.
+            // which we have already created
             verificationId = s;
-            Log.d("Update", "onCodesent");
+            Log.d("Update", "onCodesent" + s);
         }
 
         // this method is called when user
@@ -176,6 +216,7 @@ public class MainActivity2 extends AppCompatActivity {
         // calling sign in method.
         signInWithCredential(credential);
         Log.d("Update", "Verify Code");
+
     }
 
     private void signInWithCredential(PhoneAuthCredential credential) {
@@ -188,10 +229,35 @@ public class MainActivity2 extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // if the code is correct and the task is successful
                             // we are sending our user to new activity.
+
+
+                            FirebaseUser cu = mAuth.getCurrentUser();
+
+                            if (cu != null)
+                            {
+                                // User is signed in
+                                String uid = cu.getUid();
+                                Log.d("UID", "User UID: " + uid);
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("key3", uid);
+                                editor.apply();
+                            } else {
+                                // No user is signed in
+                                Log.d("UID", "No user signed in.");
+                            }
+
+                            String updatedphone = sharedPreferences.getString("key1", "");
+
+
+                            Log.d("Updated phone", "phoneno="+ updatedphone);
+
                             Intent i = new Intent(MainActivity2.this, MyLocationLayerActivity.class);
                             startActivity(i);
                             finish();
-                            Log.d("Update", "On Complete");
+
+
+
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.

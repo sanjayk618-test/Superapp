@@ -15,10 +15,13 @@
 package com.example.superapp;
 
 
+import static com.example.superapp.MainActivity2.PREF_NAME;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -59,7 +62,9 @@ public class MyLocationLayerActivity extends AppCompatActivity
     private GoogleMap mMap;
     Button nextbutt;
 
-
+    public SharedPreferences sharedPreferences;
+    public static final String PREF_NAME = "MyPrefs"; // SharedPreferences file name
+   // public static final String KEY_USERNAME = "useraddress";
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
@@ -74,6 +79,8 @@ public class MyLocationLayerActivity extends AppCompatActivity
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = LocationManager.NETWORK_PROVIDER;
@@ -118,6 +125,8 @@ public class MyLocationLayerActivity extends AppCompatActivity
 
 
 
+
+
         getLocationPermission();
 
 
@@ -136,7 +145,15 @@ public class MyLocationLayerActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Log.d("In NextButton", "Address " + currentAddress);
+
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString("key2",currentAddress);
+                edit.apply();
+
+                String useradd = sharedPreferences.getString("key2", "");
+
+
+                Log.d("In NextButton", "Address " + currentAddress + "From Shared Preference"+useradd);
                 Intent i = new Intent(MyLocationLayerActivity.this, VerifiedActivity.class);
                 i.putExtra("Address",currentAddress);
                 startActivity(i);
@@ -193,8 +210,15 @@ public class MyLocationLayerActivity extends AppCompatActivity
     @Override
     public void onMyLocationClick(@NonNull Location location)
     {
+
+
+
+
         Toast.makeText(this, "On My Location ClickCurrent location:\n" +currentAddress, Toast.LENGTH_LONG)
                 .show();
+
+
+
 
     }
 
