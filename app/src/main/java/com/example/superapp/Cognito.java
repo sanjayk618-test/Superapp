@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
@@ -16,14 +19,22 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.exceptions.CognitoIdentityProviderException;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.VerificationHandler;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cognitoidentityprovider.model.AccountRecoverySettingType;
+import com.amazonaws.services.cognitoidentityprovider.model.ResendConfirmationCodeRequest;
 import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
+
+
+
+
 import static android.content.ContentValues.TAG;
-import static androidx.core.content.ContextCompat.startActivity;
+
 
 public class Cognito {
     // ############################################################# Information about Cognito Pool
@@ -46,10 +57,15 @@ public class Cognito {
         userAttributes = new CognitoUserAttributes();
     }
 
+
+
+
+
     public void signUpInBackground(String userId, String password){
         userPool.signUpInBackground(userId, password, this.userAttributes, null, signUpCallback);
         //userPool.signUp(userId, password, this.userAttributes, null, signUpCallback);
     }
+
 
     SignUpHandler signUpCallback = new SignUpHandler() {
     /*  @Override
@@ -145,7 +161,17 @@ public class Cognito {
             Toast.makeText(appContext,"Sign in success", Toast.LENGTH_LONG).show();
             Log.d("Sign in onSuccess", "onSuccess ");
 
-                startMyLocationLayerActivity();
+            String accessToken = userSession.getAccessToken().getJWTToken();
+            String idtoken=userSession.getIdToken().getJWTToken();
+
+            Log.d("Access Token : ", "Access Token = " + accessToken);
+            Log.d("ID token : ", "ID Token = " + idtoken);
+
+
+
+
+
+            startMyLocationLayerActivity();
 
 
 
@@ -154,7 +180,9 @@ public class Cognito {
         public void startMyLocationLayerActivity()
         {
             Intent intent = new Intent(appContext, MyLocationLayerActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             appContext.startActivity(intent);
+
         }
 
         @Override
@@ -220,8 +248,5 @@ public class Cognito {
     }
 
 
-    public CognitoUserPool getUserPool()
-    {
-        return new CognitoUserPool(appContext, poolID, clientID,clientSecret,awsRegion );
-    }
+
 }

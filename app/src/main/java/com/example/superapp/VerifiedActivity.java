@@ -20,7 +20,9 @@ public class VerifiedActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
-    private int count = 0;
+    public int count = 0;
+    public int Total=0;
+    private TextView TotalDisplay;
     private TextView countDisplay;
 
 
@@ -65,6 +67,7 @@ public class VerifiedActivity extends AppCompatActivity {
 
 
         countDisplay = findViewById(R.id.count);
+        TotalDisplay=findViewById(R.id.Total);
         Button incrementButton = findViewById(R.id.incrementButton);
         Button decrementButton = findViewById(R.id.decrementButton);
         Button confirmButton=findViewById(R.id.confirm_button);
@@ -73,6 +76,8 @@ public class VerifiedActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 count++;
+                Total+=50;
+                updateTotalDisplay();
                 updateCountDisplay();
             }
         });
@@ -82,6 +87,8 @@ public class VerifiedActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (count > 0) {
                     count--;
+                    Total-=50;
+                    updateTotalDisplay();
                     updateCountDisplay();
                 }
             }
@@ -109,4 +116,7 @@ public class VerifiedActivity extends AppCompatActivity {
     private void updateCountDisplay() {
         countDisplay.setText("Count: " + count);
     }
+
+
+    private void updateTotalDisplay() {TotalDisplay.setText("Total: " + Total);}
 }

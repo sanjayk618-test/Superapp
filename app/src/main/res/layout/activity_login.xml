@@ -21,7 +21,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="@string/Username"
+        android:hint="@string/EnterEmailID"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textAlignment="viewStart"
@@ -72,16 +72,29 @@
 
     <TextView
         android:id="@+id/txtNotAccount"
-        android:layout_width="275dp"
-        android:layout_height="59dp"
+        android:layout_width="154dp"
+        android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/NotAccount"
         android:hint="Create Account"
+        android:text="@string/CreateAccount"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="0.286" />
+        app:layout_constraintVertical_bias="0.213" />
+
+    <TextView
+        android:id="@+id/Reconfirmclass"
+        android:layout_width="139dp"
+        android:layout_height="39dp"
+        android:text="Reconfirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNotAccount"
+        app:layout_constraintVertical_bias="0.496" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

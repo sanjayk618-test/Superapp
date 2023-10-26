@@ -92,7 +92,10 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.16.13'
 
 
-   //implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+
+
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
  //   implementation fileTree(include: ['*.jar'], dir: 'app/libs')
 
     // implementation platform('com.google.firebase:firebase-bom:32.2.3')

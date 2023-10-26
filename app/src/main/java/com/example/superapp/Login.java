@@ -37,6 +37,8 @@ public class Login extends AppCompatActivity {
     Button btnLogin;            // Button for Login
     EditText etUsername;
     EditText etPassword;
+
+    TextView reconfirmclass;
     // ############################################################# End View Components
 
     @Override
@@ -53,6 +55,7 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+        reconfirmclass=findViewById(R.id.Reconfirmclass);
 
 
 
@@ -60,6 +63,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Login.this, Signup.class));
+            }
+        });
+
+        reconfirmclass.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this, Reconfirm.class));
             }
         });
 

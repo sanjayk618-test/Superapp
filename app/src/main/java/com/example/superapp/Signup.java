@@ -53,6 +53,8 @@ public class Signup extends AppCompatActivity {
         etRepeatPass = findViewById(R.id.etRepeatPass);
         etConfCode = findViewById(R.id.etConfCode);
 
+        String phone = "+91" + etMobile.getText().toString();
+
         btnSignUp = findViewById(R.id.btnSignUp);
         btnVerify = findViewById(R.id.btnVerify);
 
@@ -63,7 +65,7 @@ public class Signup extends AppCompatActivity {
                 if (etPass.getText().toString().endsWith(etRepeatPass.getText().toString())) {
                     userId = etUsername.getText().toString().replace(" ", "");
                     authentication.addAttribute("name", userId);
-                    authentication.addAttribute("phone_number", etMobile.getText().toString().replace(" ", ""));
+                    authentication.addAttribute("+91"+"phone_number", etMobile.getText().toString().replace(" ", ""));
                     authentication.addAttribute("email", etEmail.getText().toString().replace(" ", ""));
                     authentication.signUpInBackground(userId, etPass.getText().toString());
                 } else {

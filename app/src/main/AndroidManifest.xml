@@ -28,12 +28,14 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".Reconfirm"
+            android:exported="false" />
+        <activity
             android:name=".Signup"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".ConfirmActivity"
             android:exported="false" />
