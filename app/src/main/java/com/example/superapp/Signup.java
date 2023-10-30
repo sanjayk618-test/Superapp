@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import static android.content.ContentValues.TAG;
 
@@ -46,14 +47,14 @@ public class Signup extends AppCompatActivity {
     }
 
     private void initViewComponents () {
-        etUsername = findViewById(R.id.etUsername);
+   //     etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
         etMobile = findViewById(R.id.etMobile);
         etPass = findViewById(R.id.etPass);
         etRepeatPass = findViewById(R.id.etRepeatPass);
         etConfCode = findViewById(R.id.etConfCode);
 
-        String phone = "+91" + etMobile.getText().toString();
+        String email= etEmail.getText().toString();
 
         btnSignUp = findViewById(R.id.btnSignUp);
         btnVerify = findViewById(R.id.btnVerify);
@@ -62,15 +63,26 @@ public class Signup extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etPass.getText().toString().endsWith(etRepeatPass.getText().toString())) {
-                    userId = etUsername.getText().toString().replace(" ", "");
-                    authentication.addAttribute("name", userId);
-                    authentication.addAttribute("+91"+"phone_number", etMobile.getText().toString().replace(" ", ""));
-                    authentication.addAttribute("email", etEmail.getText().toString().replace(" ", ""));
-                    authentication.signUpInBackground(userId, etPass.getText().toString());
-                } else {
 
+                String phone = etMobile.getText().toString().replace(" ", "");
+
+                if (phone.length() == 10) {
+
+                    if (etPass.getText().toString().endsWith(etRepeatPass.getText().toString())) {
+                        userId = etEmail.getText().toString().replace(" ", "");
+                        authentication.addAttribute("name", userId);
+                        authentication.addAttribute("phone_number", "+91" + etMobile.getText().toString().replace(" ", ""));
+                        authentication.addAttribute("email", etEmail.getText().toString().replace(" ", ""));
+                        authentication.signUpInBackground(userId, etPass.getText().toString());
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Password Does Not Match", Toast.LENGTH_LONG).show();
+                    }
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "Phone number must be 10 digits", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

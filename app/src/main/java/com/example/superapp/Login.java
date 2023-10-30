@@ -11,6 +11,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,9 @@ public class Login extends AppCompatActivity {
     EditText etPassword;
 
     TextView reconfirmclass;
+
+    public SharedPreferences sdp;
+    public static final String PREF_NAME = "datain";
     // ############################################################# End View Components
 
     @Override
@@ -47,6 +51,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle("Login");
         initViewComponents();
+
+        sdp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
     }
 
     private void initViewComponents(){
@@ -56,6 +62,8 @@ public class Login extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         reconfirmclass=findViewById(R.id.Reconfirmclass);
+
+
 
 
 
@@ -76,8 +84,21 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                String email=etUsername.getText().toString();
+
+                SharedPreferences.Editor editor = sdp.edit();
+                editor.putString("key2", email);
+                editor.apply();
+
+
+                Log.d("Login Activity", "email = :  " +email);
                 Cognito authentication = new Cognito(getApplicationContext());
                 authentication.userLogin(etUsername.getText().toString().replace(" ", ""), etPassword.getText().toString());
+
+
+
 
             }
         });

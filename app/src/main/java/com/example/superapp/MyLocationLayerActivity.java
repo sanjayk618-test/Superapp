@@ -103,6 +103,7 @@ public class MyLocationLayerActivity extends AppCompatActivity
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
+
         }
         locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
@@ -110,6 +111,7 @@ public class MyLocationLayerActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+
 
         // Remove location updates
         locationManager.removeUpdates(this);
@@ -151,6 +153,9 @@ public class MyLocationLayerActivity extends AppCompatActivity
                 edit.apply();
 
                 String useradd = sharedPreferences.getString("key2", "");
+
+
+
 
 
                 Log.d("In NextButton", "Address " + currentAddress + "From Shared Preference"+useradd);
@@ -252,6 +257,7 @@ public class MyLocationLayerActivity extends AppCompatActivity
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT)
                 .show();
         Log.d("OnMyLocation Button Click", "Address " +currentAddress );
+
 
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).

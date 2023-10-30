@@ -3,8 +3,10 @@ package com.example.superapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
+
 
 
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -34,6 +36,13 @@ import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Cognito {
@@ -47,7 +56,11 @@ public class Cognito {
     private CognitoUserAttributes userAttributes;       // Used for adding attributes to the user
     private Context appContext;
 
-    private String userPassword;                        // Used for Login
+    private String userPassword; // Used for Login
+
+    public SharedPreferences sdp;
+    public static final String PREF_NAME = "datain";
+
 
 
 
@@ -55,9 +68,8 @@ public class Cognito {
         appContext = context;
         userPool = new CognitoUserPool(context, this.poolID, this.clientID, this.clientSecret, this.awsRegion);
         userAttributes = new CognitoUserAttributes();
+
     }
-
-
 
 
 
@@ -96,10 +108,12 @@ public class Cognito {
         @Override
         public void onSuccess(CognitoUser user, SignUpResult signUpResult) {
             Log.d(TAG, "Sign-up success");
-            Toast.makeText(appContext,"Sign-up success", Toast.LENGTH_LONG).show();
+            Toast.makeText(appContext,"Sign-up success, Please Open Your Mailbox For Code", Toast.LENGTH_LONG).show();
             // Check if this user (cognitoUser) needs to be confirmed
-            boolean userConfirmed = true;
+            boolean userConfirmed = false;
             if(!userConfirmed) {
+
+
                 // This user must be confirmed and a confirmation code was sent to the user
                 // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
                 // Get the confirmation code from user
@@ -129,6 +143,14 @@ public class Cognito {
         public void onSuccess() {
             // User was successfully confirmed
             Toast.makeText(appContext,"User Confirmed", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "user confirmed");
+
+
+
+
+            startloginactivity();
+
+
 
         }
 
@@ -137,7 +159,14 @@ public class Cognito {
             // User confirmation failed. Check exception for the cause.
 
         }
+
     };
+
+    public void startloginactivity(){
+        Intent intent = new Intent(appContext, Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        appContext.startActivity(intent);
+    }
 
     public void addAttribute(String key, String value){
         userAttributes.addAttribute(key, value);
@@ -164,8 +193,16 @@ public class Cognito {
             String accessToken = userSession.getAccessToken().getJWTToken();
             String idtoken=userSession.getIdToken().getJWTToken();
 
+            sdp = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sdp.edit();
+            editor.putString("key1", idtoken);
+            editor.apply();
+
             Log.d("Access Token : ", "Access Token = " + accessToken);
             Log.d("ID token : ", "ID Token = " + idtoken);
+
+
 
 
 
@@ -176,6 +213,7 @@ public class Cognito {
 
 
         }
+
 
         public void startMyLocationLayerActivity()
         {
@@ -214,6 +252,8 @@ public class Cognito {
             Toast.makeText(appContext,"Sign in Failure", Toast.LENGTH_LONG).show();
         }
     };
+
+
 
     public String getPoolID() {
         return poolID;

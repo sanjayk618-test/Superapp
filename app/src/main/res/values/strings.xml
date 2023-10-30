@@ -13,4 +13,5 @@
     <string name="ConfCode">ConfCode</string>
     <string name="Verify">Verify</string>
     <string name="EnterConfirmationCode">ReEnter Confirmation Code</string>
+    <string name="ConfirmPassword">ConfirmPassword</string>
 </resources>
