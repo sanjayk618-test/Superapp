@@ -57,6 +57,8 @@ public class Login extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         reconfirmclass=findViewById(R.id.Reconfirmclass);
 
+          String email=etUsername.getText().toString();
+
 
 
         txtNotAccount.setOnClickListener(new View.OnClickListener(){
@@ -78,6 +80,9 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 Cognito authentication = new Cognito(getApplicationContext());
                 authentication.userLogin(etUsername.getText().toString().replace(" ", ""), etPassword.getText().toString());
+
+                DataHolder dh=new DataHolder();
+                dh.setemail(email);
 
             }
         });

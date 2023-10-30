@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
@@ -34,6 +35,12 @@ import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult;
 
 
 import static android.content.ContentValues.TAG;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Cognito {
@@ -98,7 +105,7 @@ public class Cognito {
             Log.d(TAG, "Sign-up success");
             Toast.makeText(appContext,"Sign-up success", Toast.LENGTH_LONG).show();
             // Check if this user (cognitoUser) needs to be confirmed
-            boolean userConfirmed = true;
+            boolean userConfirmed = false;
             if(!userConfirmed) {
                 // This user must be confirmed and a confirmation code was sent to the user
                 // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
@@ -129,6 +136,13 @@ public class Cognito {
         public void onSuccess() {
             // User was successfully confirmed
             Toast.makeText(appContext,"User Confirmed", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "user confirmed");
+
+
+
+
+
+
 
         }
 
@@ -164,10 +178,14 @@ public class Cognito {
             String accessToken = userSession.getAccessToken().getJWTToken();
             String idtoken=userSession.getIdToken().getJWTToken();
 
+
+
             Log.d("Access Token : ", "Access Token = " + accessToken);
             Log.d("ID token : ", "ID Token = " + idtoken);
 
 
+            DataHolder dh= new DataHolder();
+            dh.setidt(idtoken);
 
 
 

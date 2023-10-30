@@ -253,6 +253,8 @@ public class MyLocationLayerActivity extends AppCompatActivity
                 .show();
         Log.d("OnMyLocation Button Click", "Address " +currentAddress );
 
+        DataHolder dh=new DataHolder();
+        dh.setaddress(currentAddress);
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
